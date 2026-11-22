@@ -1,0 +1,12 @@
+# Private keys and secrets
+*.pem
+*.key
+.env
+
+# Terraform (for later)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# OS junk
+.DS_Store

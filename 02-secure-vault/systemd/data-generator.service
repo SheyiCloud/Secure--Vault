@@ -1,0 +1,45 @@
+#In simple terms, data-generator continuously generates data, cron schedules our backup script to run every 10 minutes, the script compresses the data in /var/app/data and uploads it to S3, S3 triggers Lambda, and Lambda records the backup details in DynamoDB.
+#Understanding the Three Sections of My Systemd Unit File
+
+#Our data-generator.service file contains three important sections that we need to understand before configuring the service.
+
+#1. [unit] — The Service Description
+
+#This section describes our service, including its name and purpose. It helps Linux identify what the service is and provides a description that we can see when managing it.
+
+#2. [service] — What the Service Should Do
+
+#This is where we define what Linux should execute when the service starts.
+
+#Here, we will configure our service to run a continuous loop that writes a timestamped line into /var/app/data/app.log every 30 seconds. We will also define what should happen if the service stops unexpectedly, including restarting it after five seconds.
+
+#3. [Install] — When the Service Should Start
+
+#This section determines how the service is enabled and linked into the system’s startup process. By specifying WantedBy= multi-user.target, we are telling systemd that this service should be enabled to start during the normal multi-user system boot process.
+
+[Unit]
+Description=Secure-Vault data generator (appends a timestamp to app.log every 30 seconds)
+
+[Service]
+ExecStart=/bin/bash -c 'while true; do echo "$$(date -Is) app is running" >> /var/app/data/app.log; sleep 30; done'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+#Creating the Data Directory
+#First, I created the directory where our application data and log file will be stored by running: Sudo mkdir -p /var/app/data
+
+#Reloading the Systemd Manager
+#After creating our service file, we need to tell systemd to recognize the new configuration. I ran: sudo systemctl daemon-reload
+
+#Enabling and Starting the Service
+#Next, I enabled the service to start automatically at boot and started it immediately using: sudo systemctl enable — now data-generator.
+
+#Checking the Service Status
+#Finally, to confirm that our service is running correctly, I executed: systemctl status data-generator
+
+If everything is configured correctly, we should see: Active: active (running)
+
+To check if the log is being written, using the command: tail -n 5 /var/app/data/app.log
