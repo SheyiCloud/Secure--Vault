@@ -2,7 +2,7 @@
 
 Full write-up: [https://medium.com/@johnoluwaseyi567/secure-vault-building-an-automated-protected-backup-pipeline-on-aws-cf07f116cbf7?sharedUserId=johnoluwaseyi567)
 
-Full documentation: [file:///C:/Users/HomePC/Downloads/Secure-Vault%20Project%20Documentation%20from%20AWS%20Build%20to%20GitHub.pdf)
+Full documentation: [https://claude.ai/artifact/N6KeQDoA9apXBzNBS3orNy#0023c263-01f1)
                                                                  
 
 ## Overview
